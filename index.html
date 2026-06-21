@@ -3,37 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime Birthday VN 🎂🎈🐦</title>
+<title>Anime Birthday VN 🎂</title>
 
 <style>
 
-/* ===== GLOBAL FIX (IMPORTANT) ===== */
-html, body{
+/* RESET */
+*{
   margin:0;
   padding:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
+  box-sizing:border-box;
 }
 
-/* MAIN BACKGROUND FIX (NO WHITE GAP EVER) */
+html,body{
+  width:100%;
+  height:100%;
+}
+
+/* BACKGROUND FIX (CLEAN) */
 body{
   font-family: Arial;
   color:white;
   text-align:center;
 
   background:url("https://i.postimg.cc/q7CgMBCt/352663d21aaaf814f86c46e8ecade9b5.jpg")
-  center center / cover no-repeat fixed;
+  center/cover no-repeat;
+
+  overflow:hidden;
 }
 
-/* mobile fix for vh bug */
-@supports (-webkit-touch-callout: none) {
-  body{
-    background-attachment: scroll;
-  }
-}
-
-/* DARK OVERLAY */
+/* DARK LAYER */
 .overlay{
   position:fixed;
   inset:0;
@@ -41,26 +39,22 @@ body{
   z-index:1;
 }
 
-/* SCREENS FULL FIX */
+/* SCREEN SYSTEM (ONLY ONE RULE) */
 .screen{
-  display:none;
   position:fixed;
   inset:0;
   z-index:2;
-  padding-top:60px;
-  box-sizing:border-box;
-  overflow:hidden;
-}
-.active{display:block;}
 
-/* BUTTONS */
-button{
-  padding:12px 25px;
-  border:none;
-  border-radius:12px;
-  font-size:18px;
-  cursor:pointer;
-  margin:10px;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  padding:20px;
+}
+
+.screen.active{
+  display:flex;
 }
 
 /* INPUT */
@@ -68,50 +62,50 @@ input{
   padding:10px;
   border-radius:10px;
   border:none;
-  outline:none;
   font-size:16px;
+  outline:none;
 }
 
-/* NO BUTTON ESCAPE */
+/* BUTTON */
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  margin:10px;
+  cursor:pointer;
+}
+
+/* NO BUTTON */
 #noBtn{position:relative;}
 
-/* ANIME GIRL IMAGE */
+/* GIRL */
 .girl{
-  width:240px;
+  width:230px;
   border-radius:20px;
   box-shadow:0 0 25px pink;
-  animation: float 2s infinite ease-in-out;
 }
 
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-12px);}
-}
-
-/* WISH BOX (SCROLL FIXED) */
+/* WISH BOX */
 #wishBox{
-  width:80%;
+  width:90%;
   max-width:650px;
   height:260px;
-  margin:auto;
   overflow-y:auto;
   background:rgba(255,255,255,0.12);
   padding:15px;
   border-radius:15px;
-  backdrop-filter:blur(8px);
   text-align:left;
   line-height:1.6;
-  box-shadow:0 0 15px rgba(255,255,255,0.2);
 }
 
 /* CAKE */
 .cake{
   font-size:110px;
   cursor:pointer;
-  text-shadow:0 0 20px gold;
 }
 
-/* GLOW TEXT */
+/* GLOW */
 .glow{
   text-shadow:0 0 10px #fff,0 0 20px #ff66ff;
 }
@@ -123,54 +117,58 @@ input{
 
 <div class="overlay"></div>
 
-<!-- MUSIC -->
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b5d1b6f4.mp3?filename=happy-birthday-to-you-piano-version-10895.mp3">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b5d1b6f4.mp3">
 </audio>
 
-<!-- SCREEN 1: NAME -->
+<!-- 1 NAME -->
 <div id="s1" class="screen active">
   <h1 class="glow">🐦🎈 Enter Your Name</h1>
   <input id="name" placeholder="Type your name...">
-  <br><br>
-  <button onclick="toIntro()">Continue ➡</button>
+  <button onclick="go(2)">Continue ➡</button>
 </div>
 
-<!-- SCREEN 2: INTRO -->
+<!-- 2 INTRO -->
 <div id="s2" class="screen">
   <h2 class="glow">Are you ready for surprise? 🎉</h2>
-
   <button onclick="start()">YES 💖</button>
   <button id="noBtn">NO 😏</button>
 </div>
 
-<!-- SCREEN 3: ANIME GIRL + WISHES -->
+<!-- 3 GIRL -->
 <div id="s3" class="screen">
   <h2 class="glow">🌸 Anime Girl Appears 🌸</h2>
 
   <img class="girl"
-       src="https://i.postimg.cc/YqnS6L6m/1aedee308e4e6dd6883aea7a902f9ae1.jpg">
+  src="https://i.postimg.cc/YqnS6L6m/1aedee308e4e6dd6883aea7a902f9ae1.jpg">
 
   <div id="wishBox"></div>
 
-  <button onclick="toCake()">Next 🎂</button>
+  <button onclick="go(4)">Next 🎂</button>
 </div>
 
-<!-- SCREEN 4: CAKE -->
+<!-- 4 CAKE -->
 <div id="s4" class="screen">
   <h2 class="glow">🎂 Cake Cutting</h2>
   <div class="cake" onclick="cutCake()">🎂</div>
 </div>
 
-<!-- SCREEN 5: FINAL -->
+<!-- 5 FINAL -->
 <div id="s5" class="screen">
-  <h1 class="glow">🎉Important Message🎉</h1>
+  <h1 class="glow">🎉 Important Message 🎉</h1>
   <p id="final"></p>
 </div>
 
 <script>
 
-/* NO button escape */
+/* SINGLE NAV SYSTEM */
+function go(n){
+  document.querySelectorAll(".screen")
+  .forEach(s=>s.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+}
+
+/* NO BUTTON MOVE */
 const noBtn=document.getElementById("noBtn");
 noBtn.addEventListener("mouseover",()=>{
   noBtn.style.position="absolute";
@@ -178,35 +176,24 @@ noBtn.addEventListener("mouseover",()=>{
   noBtn.style.left=Math.random()*80+"vw";
 });
 
-/* SCREEN SWITCH */
-function show(n){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById("s"+n).classList.add("active");
-}
-
-/* STEP 1 -> 2 */
-function toIntro(){
-  show(2);
-}
-
 /* START */
 function start(){
   document.getElementById("music").play();
-  show(3);
+  go(3);
   typeWishes();
 }
 
-/* TYPEWRITER + SCROLL FIX */
+/* TYPEWRITER */
 function typeWishes(){
 
   let name=document.getElementById("name").value || "Friend";
 
   let texts=[
-`✨ Hey ${name}, welcome to your fucking cursed world 💖`,
+`✨ Hey ${name}, i hope you will feel fine 💖`,
 `🌸 You are truly special like a main character`,
 `🎂 May your life always level up like a game`,
 `💫 Stay strong, stay happy, keep shining always`,
-`🎉 And remember — you are more amazing than you think!`
+`🎉 You are more amazing than you think!`
   ];
 
   let box=document.getElementById("wishBox");
@@ -222,7 +209,6 @@ function typeWishes(){
         p.innerHTML += texts[i].charAt(j);
         j++;
 
-        /* auto scroll fix */
         box.scrollTop = box.scrollHeight;
 
         if(j>=texts[i].length){
@@ -237,20 +223,19 @@ function typeWishes(){
   next();
 }
 
-/* CAKE SCREEN */
-function toCake(){
-  show(4);
+/* CAKE */
+function goCake(){
+  go(4);
 }
 
-/* FINAL SCREEN */
 function cutCake(){
-  show(5);
+  go(5);
 
   let name=document.getElementById("name").value || "Friend";
 
   let msg=`🎊 Cake cut done ${name}!  
 Now go give party to your friends 😏  
-if you don't give party then you will become danzo and gabi fan and Griffith became your best friend 😂`;
+otherwise you are gay xD 😂`;
 
   let el=document.getElementById("final");
 
@@ -264,6 +249,9 @@ if you don't give party then you will become danzo and gabi fan and Griffith bec
   }
   type();
 }
+
+/* FIX BUTTON NAME */
+document.querySelector("#s3 button").onclick = goCake;
 
 </script>
 
